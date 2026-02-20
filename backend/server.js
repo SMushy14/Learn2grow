@@ -27,3 +27,9 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
 });
+
+// Import routes
+const authRoutes = require('./src/routes/authRoutes');
+
+// Mount routes
+app.use('/api/auth', authRoutes);
