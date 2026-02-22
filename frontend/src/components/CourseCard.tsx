@@ -7,7 +7,6 @@ interface CourseCardProps {
 const CourseCard = ({ course }: CourseCardProps) => {
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-      {/* Course Image */}
       <div className="relative h-48 overflow-hidden">
         <img
           src={course.image}
@@ -21,7 +20,6 @@ const CourseCard = ({ course }: CourseCardProps) => {
         </div>
       </div>
 
-      {/* Course Content */}
       <div className="p-6">
         <h3 className="text-xl font-bold text-gray-800 mb-2 line-clamp-2">
           {course.title}
@@ -30,7 +28,6 @@ const CourseCard = ({ course }: CourseCardProps) => {
           {course.description}
         </p>
 
-        {/* Instructor Info */}
         <div className="flex items-center mb-4">
           <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center mr-2">
             <span className="text-indigo-600 font-semibold text-sm">
@@ -42,7 +39,6 @@ const CourseCard = ({ course }: CourseCardProps) => {
           </p>
         </div>
 
-        {/* Enroll Button */}
         <button className="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
           Enroll Now
         </button>

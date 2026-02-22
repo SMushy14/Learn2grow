@@ -10,6 +10,7 @@ function App() {
       <main>
         <Hero />
         <CoursesSection />
+        {/* TODO: add testimonials section */}
       </main>
       <Footer />
     </div>

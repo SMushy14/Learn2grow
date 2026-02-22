@@ -1,5 +1,6 @@
 import { Course } from '../types/Course';
 
+// TODO: move this to an API call later
 export const courseData: Course[] = [
   {
     id: 1,
@@ -33,7 +34,7 @@ export const courseData: Course[] = [
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=250&fit=crop',
     category: 'Marketing'
   },
-  {
+  {  
     id: 5,
     title: 'Mobile App Development',
     description: 'Build native iOS and Android apps with React Native',
