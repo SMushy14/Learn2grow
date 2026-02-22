@@ -1,16 +1,34 @@
-# Learn2Grow - Online Learning Platform
+# Learn2grow
+## Problem Statement
+Many students in Africa rely only on classroom teaching and they are therefore limited to learning materials and other skills development. The Rwandan government has played a good part in providing laptops to public schools even in rural areas but still student don't have access to structured learning resources that resonate with their syllabus and also other resources that can improve their skills. Learn2grow is a platfrom that connects students with local teachers and coaches who have structured courses that go beyond class syllabus.
 
-A modern and responsive landing page for an online learning platform built with React, TypeScript, and Tailwind CSS.
+## Users
+- Students - They can browse, enroll and access courses and learning materials
+- Teachers/ Coaches - They upload and manage contents in their course
+- Admins - They approve and manage courses to be displayed on the main platform/page
 
-## 🚀 Features
+## Technology
 
-- **Responsive Design**: Fully responsive layout that works on all devices
-- **Modern UI**: Clean and modern design using Tailwind CSS
-- **TypeScript**: Fully typed components for better development experience
-- **Component-Based**: Well-structured and reusable components
-- **Sticky Navigation**: Navbar that sticks to the top with hamburger menu on mobile
-- **Course Cards**: Beautiful course cards with hover effects
-- **Hero Section**: Eye-catching hero section with call-to-action buttons
+### Frontend
+- React 18(Vite + Typescript) - UI Library, Buils tool, dev server + Type safety
+- Tailwind CSS - Utility-first CSS framework
+### Backend
+- Node.js + Express
+### Database
+- MongoDB
+### DevOps
+- Docker + Cloud
+
+
+## License
+
+MIT License - feel free to use this project for learning or commercial purposes.
+
+## Features
+1. User authentication with roles(admin, student, Teacher/Coach)
+2. Course listing with search functionality
+3. Taecher and Admin dashboard for course upload and approval
+4. Student course enrollment
 
 ## 📁 Project Structure
 
@@ -43,12 +61,15 @@ Learn2grow/
 └── README.md                       # Project documentation
 ```
 
-## 🛠️ Tech Stack
+## Frontend Features
 
-- **React 18** - UI library
-- **TypeScript** - Type safety
-- **Tailwind CSS** - Utility-first CSS framework
-- **Vite** - Build tool and dev server
+- **Responsive Design**: Fully responsive layout that works on all devices
+- **Modern UI**: Clean and modern design using Tailwind CSS
+- **TypeScript**: Fully typed components for better development experience
+- **Component-Based**: Well-structured and reusable components
+- **Sticky Navigation**: Navbar that sticks to the top with hamburger menu on mobile
+- **Course Cards**: Beautiful course cards with hover effects
+- **Hero Section**: Eye-catching hero section with call-to-action buttons
 
 ## 📦 Installation
 
@@ -165,11 +186,3 @@ Create new components in `frontend/src/components/` and import them in `App.tsx`
 - Firefox (latest)
 - Safari (latest)
 - Edge (latest)
-
-## 📄 License
-
-MIT License - feel free to use this project for learning or commercial purposes.
-
----
-
-Built with ❤️ using React, TypeScript, and Tailwind CSS
