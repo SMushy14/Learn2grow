@@ -1,8 +1,16 @@
+export interface Teacher {
+  _id: string;
+  name: string;
+  email: string;
+}
+
 export interface Course {
-  id: number;
+  _id: string;
   title: string;
   description: string;
-  instructor: string;
-  image: string;
-  category: string;
+  teacherId: Teacher;
+  status: string;
+  subject: string;
+  language: string;
+  contentUrls: string[];
 }
