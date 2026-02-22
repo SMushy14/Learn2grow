@@ -11,7 +11,7 @@ const users = require('./data/users');
 const courses = require('./data/courses');
 
 // Load env variables (Ensure the path to your .env is correct)
-dotenv.config({ path: '../.env' });
+dotenv.config();
 
 // Connect to the database
 connectDB();
