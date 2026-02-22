@@ -30,6 +30,7 @@ app.listen(PORT, () => {
 
 // Import routes
 const authRoutes = require('./src/routes/authRoutes');
-
+const courseRoutes = require('./src/routes/courseRoutes');
 // Mount routes
 app.use('/api/auth', authRoutes);
+app.use('/api/courses', courseRoutes);
