@@ -18,7 +18,7 @@ const courseSchema = new mongoose.Schema({
   status: {
     type: String,
     enum: ['pending', 'approved', 'rejected'],
-    default: 'pending' // All new courses require admin approval
+    default: 'pending'
   },
   subject: {
     type: String,
@@ -29,17 +29,13 @@ const courseSchema = new mongoose.Schema({
     required: [true, 'Please specify the language (e.g., English, Kinyarwanda, French)'],
     default: 'English'
   },
-  keywords: {
-    type: [String], // Array of strings for better searchability later
-    default: []
-  },
   contentUrls: {
-    type: [String], // Array of links (PDFs, videos hosted elsewhere)
+    type: [String],
     required: [true, 'Please provide at least one content URL']
   }
 }, { timestamps: true });
 
-// Create text indexes so students can easily search by keywords, title, or description
-courseSchema.index({ title: 'text', description: 'text', keywords: 'text' });
+// Updated text index (removed keywords) for searchability
+courseSchema.index({ title: 'text', description: 'text', subject: 'text' });
 
 module.exports = mongoose.model('Course', courseSchema);
