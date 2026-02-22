@@ -70,3 +70,44 @@ exports.updateCourseStatus = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+// @desc    Get a single course by ID (for the course details page)
+// @route   GET /api/courses/:id
+// @access  Public / Students
+exports.getCourseById = async (req, res) => {
+  try {
+    const course = await Course.findById(req.params.id).populate('teacherId', 'name email');
+
+    if (!course) {
+      return res.status(404).json({ message: 'Course not found' });
+    }
+
+    res.status(200).json(course);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Get courses uploaded by the logged-in teacher
+// @route   GET /api/courses/teacher/my-courses
+// @access  Private (Teachers only)
+exports.getTeacherCourses = async (req, res) => {
+  try {
+    // Finds only courses where the teacherId matches the logged-in user's token ID
+    const courses = await Course.find({ teacherId: req.user._id });
+    res.status(200).json(courses);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Get ALL courses (Pending, Approved, Rejected) for the dashboard
+// @route   GET /api/courses/admin/all
+// @access  Private (Admins only)
+exports.getAllCoursesAdmin = async (req, res) => {
+  try {
+    const courses = await Course.find({}).populate('teacherId', 'name email');
+    res.status(200).json(courses);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
