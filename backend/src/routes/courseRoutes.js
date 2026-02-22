@@ -1,3 +1,11 @@
+const {
+  createCourse,
+  getApprovedCourses,
+  updateCourseStatus,
+  getCourseById,         // NEW
+  getTeacherCourses,     // NEW
+  getAllCoursesAdmin     // NEW
+} = require('../controllers/courseController');
 const express = require('express');
 const router = express.Router();
 const {
