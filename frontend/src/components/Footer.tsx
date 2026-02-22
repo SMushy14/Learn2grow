@@ -1,23 +1,20 @@
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
+  const year = new Date().getFullYear();
 
   return (
     <footer className="bg-gray-900 text-gray-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Brand Section */}
           <div className="col-span-1 md:col-span-2">
             <h3 className="text-2xl font-bold text-white mb-4">Learn2Grow</h3>
             <p className="text-gray-400 mb-4 max-w-md">
               Empowering learners worldwide with high-quality education. Join
               thousands of students already learning and growing with us.
             </p>
-            {/* Social Media Links */}
             <div className="flex space-x-4">
               <a
                 href="#"
                 className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-indigo-600 transition-colors"
-                aria-label="Facebook"
               >
                 <svg
                   className="w-5 h-5"
@@ -30,7 +27,6 @@ const Footer = () => {
               <a
                 href="#"
                 className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-indigo-600 transition-colors"
-                aria-label="Twitter"
               >
                 <svg
                   className="w-5 h-5"
@@ -43,7 +39,6 @@ const Footer = () => {
               <a
                 href="#"
                 className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-indigo-600 transition-colors"
-                aria-label="LinkedIn"
               >
                 <svg
                   className="w-5 h-5"
@@ -56,7 +51,6 @@ const Footer = () => {
               <a
                 href="#"
                 className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-indigo-600 transition-colors"
-                aria-label="Instagram"
               >
                 <svg
                   className="w-5 h-5"
@@ -69,7 +63,7 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* links */}
           <div>
             <h4 className="text-white font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
@@ -102,7 +96,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Support */}
           <div>
             <h4 className="text-white font-semibold mb-4">Support</h4>
             <ul className="space-y-2">
@@ -130,10 +123,9 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Copyright */}
         <div className="border-t border-gray-800 mt-8 pt-8 text-center">
           <p className="text-gray-400">
-            &copy; {currentYear} Learn2Grow. All rights reserved.
+            &copy; {year} Learn2Grow. All rights reserved.
           </p>
         </div>
       </div>

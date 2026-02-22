@@ -6,7 +6,6 @@ const Hero = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
         <div className="grid md:grid-cols-2 gap-12 items-center">
-          {/* Text Content */}
           <div className="text-center md:text-left">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
               Grow Your Skills. Shape Your Future.
@@ -32,7 +31,7 @@ const Hero = () => {
             </div>
           </div>
 
-          {/* Image/Illustration Placeholder */}
+          {/* hero image */}
           <div className="hidden md:flex justify-center items-center">
             <div className="relative">
               <div className="w-full h-80 bg-white/10 backdrop-blur-sm rounded-2xl shadow-2xl flex items-center justify-center">
@@ -42,7 +41,6 @@ const Hero = () => {
                   className="w-full h-full object-cover rounded-2xl"
                 />
               </div>
-              {/* Decorative elements */}
               <div className="absolute -top-4 -right-4 w-24 h-24 bg-yellow-400 rounded-full opacity-20"></div>
               <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-pink-400 rounded-full opacity-20"></div>
             </div>
