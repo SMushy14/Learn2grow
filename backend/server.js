@@ -24,7 +24,7 @@ app.get('/api/status', (req, res) => {
 const PORT = process.env.PORT || 5000;
 
 // Start the server
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
 });
 
