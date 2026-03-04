@@ -49,8 +49,8 @@ jobs:
   
     defaults:
     run:
-        working-directory:backend
-      strategy:
+      working-directory:backend
+    strategy:
           matrix:
           node-version: [18.x]
   
