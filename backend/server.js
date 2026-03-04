@@ -15,8 +15,16 @@ connectDB();
 app.use(cors()); // Allows your React frontend to communicate with this API
 app.use(express.json()); // Allows Express to parse incoming JSON data in request bodies
 
+// Import routes
+const authRoutes = require('./src/routes/authRoutes');
+const courseRoutes = require('./src/routes/courseRoutes');
+
+// Mount routes
+app.use('/api/auth', authRoutes);
+app.use('/api/courses', courseRoutes);
+
 // A simple test route to verify the server is running
-app.get('/api/status', (req, res) => {
+app.get('/api/health', (req, res) => {
   res.status(200).json({ message: 'Rwandan Learning Platform API is running!' });
 });
 
@@ -24,13 +32,6 @@ app.get('/api/status', (req, res) => {
 const PORT = process.env.PORT || 5000;
 
 // Start the server
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
 });
-
-// Import routes
-const authRoutes = require('./src/routes/authRoutes');
-const courseRoutes = require('./src/routes/courseRoutes');
-// Mount routes
-app.use('/api/auth', authRoutes);
-app.use('/api/courses', courseRoutes);
