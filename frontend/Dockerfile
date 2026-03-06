@@ -12,9 +12,6 @@ RUN npm ci --legacy-peer-deps --only=production
 # Copy the app
 COPY . .
 
-#Buil app
-RUN npm run build
-
 # Expose the port
 EXPOSE 3000
 
