@@ -1,4 +1,4 @@
-FROM node:25-alpine AS build
+FROM node:20-alpine AS build
 
 # Create app directory
 WORKDIR /app
@@ -7,13 +7,10 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install app dependencies
-RUN npm install
+RUN npm ci --legacy-peer-deps --only=production
 
 # Copy the app
 COPY . .
-
-# Set environment variable for production
-ENV NODE_ENV=production
 
 # Expose the port
 EXPOSE 3000

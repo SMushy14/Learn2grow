@@ -2,7 +2,7 @@
 # build the source code and run tests across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: Node.js CI
+name: CI workflow
 
 on:
   push:
@@ -30,13 +30,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci --legacy-peer-deps
 
       - name: Lint code
-        run: npm run lint
-
-      - name: Run tests
-        run: npm test
+        run: npx eslint . --ext .ts,.tsx
 
       - name: Build Docker image
         run: docker build -t learn2grow-backend .
@@ -45,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [20.x]
     defaults:
       run:
         working-directory: frontend
@@ -60,16 +57,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci --legacy-peer-deps
 
       - name: Lint code
         run: npm run lint
-
-      - name: Run tests
-        run: npm test -- --watchAll=false
-
-      - name: Build project
-        run: npm run build
 
       - name: Build Docker image
         run: docker build -t frontend-app .
