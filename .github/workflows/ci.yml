@@ -62,8 +62,5 @@ jobs:
       - name: Lint code
         run: npm run lint
 
-      - name: Build project
-        run: npm run build
-
       - name: Build Docker image
         run: docker build -t frontend-app .
