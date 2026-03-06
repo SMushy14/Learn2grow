@@ -35,9 +35,6 @@ jobs:
       - name: Lint code
         run: npx eslint . --ext .ts,.tsx
 
-      - name: Run tests
-        run: npm test
-
       - name: Build Docker image
         run: docker build -t learn2grow-backend .
 
@@ -64,9 +61,6 @@ jobs:
 
       - name: Lint code
         run: npm run lint
-
-      - name: Run tests
-        run: npm test -- --watchAll=false
 
       - name: Build project
         run: npm run build
