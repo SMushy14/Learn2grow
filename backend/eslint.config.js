@@ -1,7 +1,3 @@
-// import eslint from "@eslint/js";
-// import react from "eslint-plugin-react";
-// import { plugin } from "mongoose";
-
 export default [
     {
     languageOptions: {
@@ -16,9 +12,8 @@ export default [
     },
     rules: {
       "no-unused-vars": "off",
-      "no-console": "warn",
        "semi": ["error", "always"],
        "quotes": ["error", "double"],
     },
   },
-]
+];
