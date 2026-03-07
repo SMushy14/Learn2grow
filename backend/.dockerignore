@@ -4,3 +4,5 @@ npm-debug.log
 src/tests
 .git
 .gitignore
+.vscode
+coverage
