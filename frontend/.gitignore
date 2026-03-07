@@ -1,5 +1,5 @@
 # Dependencies
-node_modules
+node_modules/
 .pnp
 .pnp.js
 
@@ -71,6 +71,7 @@ desktop.ini
 
 # Optional eslint cache
 .eslintcache
+.prettier-cache
 
 # Optional REPL history
 .node_repl_history
