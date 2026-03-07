@@ -1,3 +1,11 @@
-@SMushy14
-@NsengaNigel
-@fniyonshuti
+# Global owners
+* @SMushy14 @fniyonshuti @NsengaNigel
+
+# Frontend
+/frontend/ @fniyonshuti
+
+# Backend
+/backend/ @NsengaNigel
+
+# CI and Devops
+/.github/ @SMushy14
