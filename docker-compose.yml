@@ -9,9 +9,16 @@ services:
   backend:
     build: ./backend
     env_file:
-      - .env
+      - /backend/.env
     depends_on:
       - db
 
   db:
-    image: mongo
+    image: mongo:7.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
