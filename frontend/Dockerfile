@@ -1,4 +1,4 @@
-FROM node:25-alpine AS build
+FROM node:20-alpine AS build
 
 # Create app directory
 WORKDIR /app
@@ -7,7 +7,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install app dependencies
-RUN npm install
+RUN npm ci --legacy-peer-deps --only=production
 
 # Copy the app
 COPY . .
@@ -16,4 +16,4 @@ COPY . .
 EXPOSE 3000
 
 # Start the app
-CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"] 
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
