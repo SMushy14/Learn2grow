@@ -1,9 +1,9 @@
 // Load environment variables first
-require('dotenv').config();
+require("dotenv").config();
 
-const express = require('express');
-const cors = require('cors');
-const connectDB = require('./src/config/db');
+const express = require("express");
+const cors = require("cors");
+const connectDB = require("./src/config/db");
 
 // Initialize Express app
 const app = express();
@@ -16,22 +16,22 @@ app.use(cors()); // Allows your React frontend to communicate with this API
 app.use(express.json()); // Allows Express to parse incoming JSON data in request bodies
 
 // Import routes
-const authRoutes = require('./src/routes/authRoutes');
-const courseRoutes = require('./src/routes/courseRoutes');
+const authRoutes = require("./src/routes/authRoutes");
+const courseRoutes = require("./src/routes/courseRoutes");
 
 // Mount routes
-app.use('/api/auth', authRoutes);
-app.use('/api/courses', courseRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/courses", courseRoutes);
 
 // A simple test route to verify the server is running
-app.get('/api/health', (req, res) => {
-  res.status(200).json({ message: 'Rwandan Learning Platform API is running!' });
+app.get("/api/health", (req, res) => {
+  res.status(200).json({ message: "Rwandan Learning Platform API is running!" });
 });
 
 // Define the PORT
 const PORT = process.env.PORT || 5000;
 
 // Start the server
-app.listen(PORT, () => {
-  console.log(`Server is running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server is running in ${process.env.NODE_ENV || "development"} mode on port ${PORT}`);
 });

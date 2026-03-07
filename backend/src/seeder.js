@@ -1,14 +1,14 @@
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-const connectDB = require('./config/db');
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+const connectDB = require("./config/db");
 
 // Import Models
-const User = require('./models/User');
-const Course = require('./models/Course');
+const User = require("./models/User");
+const Course = require("./models/Course");
 
 // Import Data
-const users = require('./data/users');
-const courses = require('./data/courses');
+const users = require("./data/users");
+const courses = require("./data/courses");
 
 // Load env variables (Ensure the path to your .env is correct)
 dotenv.config();
@@ -40,7 +40,7 @@ const importData = async () => {
     // 5. Insert the courses
     await Course.insertMany(sampleCourses);
 
-    console.log('Data successfully imported!');
+    console.log("Data successfully imported!");
     process.exit();
   } catch (error) {
     console.error(`Error with data import: ${error.message}`);
@@ -54,7 +54,7 @@ const destroyData = async () => {
     await Course.deleteMany();
     await User.deleteMany();
 
-    console.log('🗑️ Data successfully destroyed!');
+    console.log("🗑️ Data successfully destroyed!");
     process.exit();
   } catch (error) {
     console.error(` Error destroying data: ${error.message}`);
@@ -63,7 +63,7 @@ const destroyData = async () => {
 };
 
 // Check the terminal command flag to see if we should import or destroy
-if (process.argv[2] === '-d') {
+if (process.argv[2] === "-d") {
   destroyData();
 } else {
   importData();
