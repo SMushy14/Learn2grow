@@ -81,7 +81,7 @@ Learn2grow/
 docker-compose up --build
 ```
 This command will build images for both frontend and backend, start the MongoDB, links all containers and you can access the application in the ports:
-`http://localhost:3000` and `http://localhost:5000`.
+`http://localhost:3000` for frontend and `http://localhost:5000`for backend.
 You can stop the application with;
 ```bash
 docker-compose down
