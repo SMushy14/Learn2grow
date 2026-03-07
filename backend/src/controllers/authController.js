@@ -7,6 +7,7 @@ const generateToken = (id) => {
     expiresIn: "30d",
   });
 };
+exports.generateToken = generateToken;
 
 // @desc    Register a new user
 // @route   POST /api/auth/register
