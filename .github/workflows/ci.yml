@@ -65,8 +65,8 @@ jobs:
       - name: Lint and fixing code
         run: npm run lint
 
-      - name: Fixing linting issues
-        run: npm run lint -- --fix
+      - name: Run Tests
+        run: npm run test
 
       - name: Build Docker image
         run: docker build -t frontend-app .
