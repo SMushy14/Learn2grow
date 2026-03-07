@@ -1,4 +1,4 @@
-const Course = require('../models/Course');
+const Course = require("../models/Course");
 
 // @desc    Create a new course
 // @route   POST /api/courses
@@ -24,7 +24,7 @@ exports.createCourse = async (req, res) => {
 exports.getApprovedCourses = async (req, res) => {
   try {
     // Start with a base query that only looks for approved courses
-    const query = { status: 'approved' };
+    const query = { status: "approved" };
 
     // If the frontend sends a subject filter (?subject=Math)
     if (req.query.subject) {
@@ -36,7 +36,7 @@ exports.getApprovedCourses = async (req, res) => {
       query.language = req.query.language;
     }
 
-    const courses = await Course.find(query).populate('teacherId', 'name email');
+    const courses = await Course.find(query).populate("teacherId", "name email");
     res.status(200).json(courses);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -51,8 +51,8 @@ exports.updateCourseStatus = async (req, res) => {
     const { status } = req.body;
 
     // Ensure the admin sent a valid status
-    if (!['approved', 'rejected', 'pending'].includes(status)) {
-      return res.status(400).json({ message: 'Invalid status' });
+    if (!["approved", "rejected", "pending"].includes(status)) {
+      return res.status(400).json({ message: "Invalid status" });
     }
 
     const course = await Course.findByIdAndUpdate(
@@ -62,7 +62,7 @@ exports.updateCourseStatus = async (req, res) => {
     );
 
     if (!course) {
-      return res.status(404).json({ message: 'Course not found' });
+      return res.status(404).json({ message: "Course not found" });
     }
 
     res.status(200).json(course);
@@ -75,10 +75,10 @@ exports.updateCourseStatus = async (req, res) => {
 // @access  Public / Students
 exports.getCourseById = async (req, res) => {
   try {
-    const course = await Course.findById(req.params.id).populate('teacherId', 'name email');
+    const course = await Course.findById(req.params.id).populate("teacherId", "name email");
 
     if (!course) {
-      return res.status(404).json({ message: 'Course not found' });
+      return res.status(404).json({ message: "Course not found" });
     }
 
     res.status(200).json(course);
@@ -105,7 +105,7 @@ exports.getTeacherCourses = async (req, res) => {
 // @access  Private (Admins only)
 exports.getAllCoursesAdmin = async (req, res) => {
   try {
-    const courses = await Course.find({}).populate('teacherId', 'name email');
+    const courses = await Course.find({}).populate("teacherId", "name email");
     res.status(200).json(courses);
   } catch (error) {
     res.status(500).json({ message: error.message });
