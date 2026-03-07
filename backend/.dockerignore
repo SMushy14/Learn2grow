@@ -1,8 +1,0 @@
-node_modules
-.env
-npm-debug.log
-src/tests
-.git
-.gitignore
-.vscode
-coverage
