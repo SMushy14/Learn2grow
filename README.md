@@ -71,6 +71,22 @@ Learn2grow/
 - **Course Cards**: Beautiful course cards with hover effects
 - **Hero Section**: Eye-catching hero section with call-to-action buttons
 
+## Running the application with Docker Compose
+### Requirements:
+1. Install Docker in your machine
+2. Install Docker compose in your machine
+
+### Run Docker compose command
+```bash
+docker-compose up --build
+```
+This command will build images for both frontend and backend, start the MongoDB, links all containers and you can access the application in the ports:
+`http://localhost:3000` and `http://localhost:5000`.
+You can stop the application with;
+```bash
+docker-compose down
+```
+
 ## 📦 Installation
 
 1. Navigate to the frontend directory:
