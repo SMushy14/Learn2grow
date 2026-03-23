@@ -528,3 +528,7 @@ MigrationBackup/
 .ionide/
 
 # End of https://www.toptal.com/developers/gitignore/api/node,vs,react
+.terraform/
+*.tfstate
+*.tfstate.backup
+terraform.tfvars
