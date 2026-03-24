@@ -39,7 +39,16 @@ jobs:
         run: npm run test
 
       - name: Build Docker image
-        run: docker build -t learn2grow-backend .
+        run: docker build -t learn2grow-backend:ci .
+
+      - name: Scan backend image for CRITICAL vulnerabilities
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: image
+          image-ref: learn2grow-backend:ci
+          severity: CRITICAL
+          ignore-unfixed: true
+          exit-code: 1
 
   frontend:
     runs-on: ubuntu-latest
@@ -69,4 +78,30 @@ jobs:
         run: npm run lint -- --fix
 
       - name: Build Docker image
-        run: docker build -t frontend-app .
+        run: docker build -t frontend-app:ci .
+
+      - name: Scan frontend image for CRITICAL vulnerabilities
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: image
+          image-ref: frontend-app:ci
+          severity: CRITICAL
+          ignore-unfixed: true
+          exit-code: 1
+
+  iac-security-scan:
+    name: IaC Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Scan IaC and config files for CRITICAL misconfigurations
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: misconfig
+          severity: CRITICAL
+          exit-code: 1
