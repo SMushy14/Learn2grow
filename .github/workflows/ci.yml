@@ -90,19 +90,18 @@ jobs:
           exit-code: 1
           ignore-unfixed: true
 
-  iac-security-scan:
-    name: IaC Security Scan
+  scan-infrastructure:
+    name: Scan Terraform Code
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Scan IaC and config files for CRITICAL misconfigurations
-        uses: aquasecurity/trivy-action@0.28.0
+      - name: Scan Terraform code
+        uses: aquasecurity/tfsec-action@v1.0.0
         with:
-          scan-type: fs
-          scan-ref: .
-          scanners: misconfig
-          severity: CRITICAL
-          exit-code: 1
+          working_directory: terraform/ 
+          exit_code: 1 
+
+
+
