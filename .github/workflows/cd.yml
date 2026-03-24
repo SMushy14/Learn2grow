@@ -45,21 +45,34 @@ jobs:
           aws ecr get-login-password --region ${{ secrets.AWS_REGION }} \
           | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
 
-      # Build Docker image
-      - name: Build Docker image
+      # Build Docker images
+      - name: Build Frontend Docker image
         run: |
-          docker build -t ${{ secrets.ECR_REPOSITORY }}:latest ./backend
+          docker build -t learn2grow-frontend ./frontend
 
-      # Tag the image with the ECR registry
+      - name: Build Backend Docker image
+        run: |
+          docker build -t learn2grow-backend ./backend
+
+      # Tag the images with the ECR registry
       - name: Tag image
         run: |
-          docker tag ${{ secrets.ECR_REPOSITORY }}:latest \
-          ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
+          docker tag learn2grow-frontend:latest \
+          ${{ secrets.ECR_REGISTRY }}/learn2grow-frontend:latest
 
-      # Push the image to ECR
-      - name: Push image
+      - name: Tag backend image
         run: |
-          docker push ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
+          docker tag learn2grow-backend:latest \
+          ${{ secrets.ECR_REGISTRY }}/learn2grow-backend:latest
+
+      # Push the images to ECR
+      - name: Push frontend image
+        run: |
+          docker push ${{ secrets.ECR_REGISTRY }}/learn2grow-frontend:latest
+
+      - name: Push backend image
+        run: |
+          docker push ${{ secrets.ECR_REGISTRY }}/learn2grow-backend:latest
 
       # Setup SSH for Ansible deployment
       - name: Setup SSH

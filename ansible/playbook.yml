@@ -1,7 +1,62 @@
----
-- name: Configure App VM
-  hosts: app
+- name: Configure VM
+  hosts: web
   become: true
 
-  roles:
-    - docker
+    # This playbook configures the VM to run the Docker containers for the Learn2Grow application. It performs the following tasks:
+  vars:
+    ecr_registry: "{{ lookup('env','ECR_REGISTRY') }}"
+    aws_region: "{{ lookup('env','AWS_REGION') }}"
+
+  tasks:
+
+    - name: Update packages
+      apt:
+        update_cache: yes
+
+    # Install Docker, Docker Compose, Git, and AWS CLI
+    - name: Install required packages
+      apt:
+        name:
+          - docker.io
+          - docker-compose
+          - git
+          - awscli
+        state: present
+
+    # Start Docker service
+    - name: Start Docker
+      service:
+        name: docker
+        state: started
+        enabled: true
+
+    # Add ubuntu user to docker group to allow running docker commands without sudo
+    - name: Add ubuntu user to docker group
+      user:
+        name: ubuntu
+        groups: docker
+        append: yes
+
+    # Login to ECR to allow pulling images
+    - name: Login to Amazon ECR
+      shell: |
+        aws ecr get-login-password --region {{ aws_region }} \
+        | docker login --username AWS --password-stdin {{ ecr_registry }}
+
+    # Copy docker-compose file to VM
+    - name: Copy docker-compose file
+      copy:
+        src: ../docker-compose.yml
+        dest: /home/ubuntu/docker-compose.yml
+
+    # Pull the latest images from ECR
+    - name: Pull latest images
+      command: docker-compose pull
+      args:
+        chdir: /home/ubuntu
+
+    # Run the containers
+    - name: Run containers
+      command: docker-compose up -d
+      args:
+        chdir: /home/ubuntu
