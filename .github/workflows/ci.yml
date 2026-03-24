@@ -85,3 +85,4 @@ jobs:
           exit-code: '1' # This is crucial! It fails the step if issues are found.
           ignore-unfixed: true
           severity: 'CRITICAL' # Fail only for Critical issues
+
