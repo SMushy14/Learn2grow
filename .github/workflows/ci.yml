@@ -78,16 +78,17 @@ jobs:
         run: npm run lint -- --fix
 
       - name: Build Docker image
-        run: docker build -t frontend-app:ci .
+        run: docker build -t frontend-app:latest .
 
-      - name: Scan frontend image for CRITICAL vulnerabilities
-        uses: aquasecurity/trivy-action@0.28.0
+      - name: Scan frontend image for vulnerabilities
+        uses: aquasecurity/trivy-action@master
         with:
-          scan-type: image
-          image-ref: frontend-app:ci
-          severity: CRITICAL
-          ignore-unfixed: true
+          
+          image-ref: frontend-app:latest
+          severity: CRITICAL,HIGH
+          format: table
           exit-code: 1
+          ignore-unfixed: true
 
   iac-security-scan:
     name: IaC Security Scan
