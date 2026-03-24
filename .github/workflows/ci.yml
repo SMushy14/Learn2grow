@@ -80,8 +80,8 @@ jobs:
       - name: Scan Docker image for vulnerabilities
         uses: aquasecurity/trivy-action@master
         with:
-        image-ref: 'frontend-app' # Must match the tag from your build step
-        format: 'table'
-        exit-code: '1' # This is crucial! It fails the step if issues are found.
-        ignore-unfixed: true
-        severity: 'CRITICAL,HIGH' # Only fail for Critical or High issues
+          image-ref: 'frontend-app' # Must match the tag from your build step
+          format: 'table'
+          exit-code: '1' # This is crucial! It fails the step if issues are found.
+          ignore-unfixed: true
+          severity: 'CRITICAL,HIGH' # Only fail for Critical or High issues
