@@ -48,22 +48,20 @@ jobs:
       # Build Docker images
       - name: Build Frontend Docker image
         run: |
-          docker build -t devops-project-dev-frontend ./frontend
+          docker build -t ${{ secrets.ECR_REGISTRY }}/devops-project-dev-frontend:latest ./frontend
 
       - name: Build Backend Docker image
         run: |
-          docker build -t devops-project-dev-backend ./backend
+          docker build -t ${{ secrets.ECR_REGISTRY }}/devops-project-dev-backend:latest ./backend
 
       # Tag the images with the ECR registry
-      - name: Tag image
+      - name: Tag frontend image
         run: |
-          docker tag devops-project-dev-frontend:latest \
-          ${{ secrets.ECR_REGISTRY }}/devops-project-dev-frontend:latest
+          docker tag ${{ secrets.ECR_REGISTRY }}/devops-project-dev-frontend:latest ${{ secrets.ECR_REGISTRY }}/devops-project-dev-frontend:latest
 
       - name: Tag backend image
         run: |
-          docker tag devops-project-dev-backend:latest \
-          ${{ secrets.ECR_REGISTRY }}/devops-project-dev-backend:latest
+          docker tag ${{ secrets.ECR_REGISTRY }}/devops-project-dev-backend:latest ${{ secrets.ECR_REGISTRY }}/devops-project-dev-backend:latest
 
       # Push the images to ECR
       - name: Push frontend image
