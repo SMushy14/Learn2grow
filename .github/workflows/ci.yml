@@ -39,13 +39,7 @@ jobs:
         run: npm run test
 
       - name: Build Docker image
-        run: docker build -t ${{ secrets.ECR_REGISTRY }}/devops-project-dev-backend:latest .
-
-      - name: Log in to DockerHub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
-      - name: Push Docker image
-        run: docker push ${{ secrets.ECR_REGISTRY }}/devops-project-dev-backend:latest
+        run: docker build -t learn2grow-backend .
 
   frontend:
     runs-on: ubuntu-latest
@@ -75,10 +69,4 @@ jobs:
         run: npm run test
 
       - name: Build Docker image
-        run: docker build -t devops-project-dev-frontend ./frontend
-
-      - name: Log in to DockerHub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
-      - name: Push Docker image
-        run: docker push ${{ secrets.ECR_REGISTRY }}/devops-project-dev-frontend:latest
+        run: docker build -t frontend-app .
