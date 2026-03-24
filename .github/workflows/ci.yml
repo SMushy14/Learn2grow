@@ -6,7 +6,7 @@ name: CI workflow
 
 on:
   push:
-    branches-ignore: ["frontend"]
+    branches: ["frontend"]
   
 
 jobs:
