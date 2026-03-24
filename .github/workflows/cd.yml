@@ -39,12 +39,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      # Login to ECR
-      - name: Login to ECR
-        run: |
-          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} \
-          | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
-
       # Build Docker images
       - name: Build Frontend Docker image
         run: |
@@ -53,6 +47,12 @@ jobs:
       - name: Build Backend Docker image
         run: |
           docker build -t devops-project-dev-backend ./backend
+
+      # Login to ECR
+      - name: Login to ECR
+        run: |
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} \
+          | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
 
       # Tag the images with the ECR registry
       - name: Tag frontend image
