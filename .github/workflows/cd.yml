@@ -48,31 +48,31 @@ jobs:
       # Build Docker images
       - name: Build Frontend Docker image
         run: |
-          docker build -t learn2grow-frontend ./frontend
+          docker build -t devops-project-dev-frontend ./frontend
 
       - name: Build Backend Docker image
         run: |
-          docker build -t learn2grow-backend ./backend
+          docker build -t devops-project-dev-backend ./backend
 
       # Tag the images with the ECR registry
       - name: Tag image
         run: |
-          docker tag learn2grow-frontend:latest \
-          ${{ secrets.ECR_REGISTRY }}/learn2grow-frontend:latest
+          docker tag devops-project-dev-frontend:latest \
+          ${{ secrets.ECR_REGISTRY }}/devops-project-dev-frontend:latest
 
       - name: Tag backend image
         run: |
-          docker tag learn2grow-backend:latest \
-          ${{ secrets.ECR_REGISTRY }}/learn2grow-backend:latest
+          docker tag devops-project-dev-backend:latest \
+          ${{ secrets.ECR_REGISTRY }}/devops-project-dev-backend:latest
 
       # Push the images to ECR
       - name: Push frontend image
         run: |
-          docker push ${{ secrets.ECR_REGISTRY }}/learn2grow-frontend:latest
+          docker push ${{ secrets.ECR_REGISTRY }}/devops-project-dev-frontend:latest
 
       - name: Push backend image
         run: |
-          docker push ${{ secrets.ECR_REGISTRY }}/learn2grow-backend:latest
+          docker push ${{ secrets.ECR_REGISTRY }}/devops-project-dev-backend:latest
 
       # Setup SSH for Ansible deployment
       - name: Setup SSH

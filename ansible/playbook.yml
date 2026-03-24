@@ -3,10 +3,6 @@
   become: true
 
     # This playbook configures the VM to run the Docker containers for the Learn2Grow application. It performs the following tasks:
-  vars:
-    ecr_registry: "{{ lookup('env','ECR_REGISTRY') }}"
-    aws_region: "{{ lookup('env','AWS_REGION') }}"
-
   tasks:
 
     - name: Update packages
@@ -40,8 +36,8 @@
     # Login to ECR to allow pulling images
     - name: Login to Amazon ECR
       shell: |
-        aws ecr get-login-password --region {{ aws_region }} \
-        | docker login --username AWS --password-stdin {{ ecr_registry }}
+        aws ecr get-login-password --region {{ AWS_REGION }} \
+        | docker login --username AWS --password-stdin {{ ECR_REGISTRY }}
 
     # Copy docker-compose file to VM
     - name: Copy docker-compose file

@@ -1,7 +1,7 @@
 services:
   frontend:
     build: ./frontend
-    image: smushy14/learn2grow-frontend:latest
+    image: ${ECR_REGISTRY}/devops-project-dev-frontend
     ports:
       - "3000:3000"
     depends_on:
@@ -11,7 +11,7 @@ services:
 
   backend:
     build: ./backend
-    image: smushy14/learn2grow-backend:latest
+    image: ${ECR_REGISTRY}/devops-project-dev-backend
     env_file:
       - ./backend/.env
     ports:
