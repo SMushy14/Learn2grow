@@ -1,0 +1,85 @@
+name: CD - Deploy to Production
+
+on:
+  push:
+    branches:
+      - devbranch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Setup Node.js environment
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # Install dependencies and run tests
+      - name: Install dependencies
+        run: |
+          cd backend
+          npm ci
+
+      - name: Run tests
+        run: |
+          cd backend
+          npm run test
+
+      # Configure AWS credentials securely
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      # Build Docker images
+      - name: Build Frontend Docker image
+        run: |
+          docker build -t devops-project-dev-frontend ./frontend
+
+      - name: Build Backend Docker image
+        run: |
+          docker build -t devops-project-dev-backend ./backend
+
+      # Login to ECR
+      - name: Login to ECR
+        run: |
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} \
+          | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
+
+      # Tag the images with the ECR registry
+      - name: Tag frontend image
+        run: |
+          docker tag devops-project-dev-frontend:latest ${{ secrets.ECR_REGISTRY }}/devops-project-dev-frontend:latest
+
+      - name: Tag backend image
+        run: |
+          docker tag devops-project-dev-backend:latest ${{ secrets.ECR_REGISTRY }}/devops-project-dev-backend:latest
+
+      # Push the images to ECR
+      - name: Push frontend image
+        run: |
+          docker push ${{ secrets.ECR_REGISTRY }}/devops-project-dev-frontend:latest
+
+      - name: Push backend image
+        run: |
+          docker push ${{ secrets.ECR_REGISTRY }}/devops-project-dev-backend:latest
+
+      # Setup SSH for Ansible deployment
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      # Install Ansible
+      - name: Deploy with Ansible
+        run: |
+          cd ansible
+          ansible-playbook -i inventory.ini playbook.yml

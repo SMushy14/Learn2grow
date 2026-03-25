@@ -1,0 +1,7 @@
+aws_region    = "us-east-1"
+project_name  = "learn2grow"
+environment   = "dev"
+vpc_cidr      = "10.0.0.0/16"
+key_pair_name = "your-key-pair-name"
+db_username   = "admin"
+db_password   = "your-secure-password"
