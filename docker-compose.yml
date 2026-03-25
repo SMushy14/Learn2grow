@@ -1,19 +1,24 @@
 services:
   frontend:
     build: ./frontend
+    image: ${ECR_REGISTRY}/devops-project-dev-frontend
     ports:
       - "3000:3000"
     depends_on:
-      - backend
+    backend:
+      condition: service_started
+
 
   backend:
     build: ./backend
+    image: ${ECR_REGISTRY}/devops-project-dev-backend
     env_file:
       - ./backend/.env
     ports:
       - "5000:5000"
     depends_on:
-      - db
+    db:
+      condition: service_healthy
 
   db:
     image: mongo:7.0
@@ -21,6 +26,12 @@ services:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
+    healthcheck:
+      test: ["executable", "arg"]
+      interval: 1m20s
+      timeout: 20s
+      retries: 5
+      start_period: 20s
 
 volumes:
   mongo-data:
