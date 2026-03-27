@@ -1,0 +1,69 @@
+---
+- name: Deploy App to VM
+  hosts: app
+  become: true
+
+  vars:
+    ecr_registry: "{{ ecr_registry }}"
+    aws_region: "{{ aws_region }}"
+    app_dir: /home/ec2-user/app
+
+  tasks:
+    - name: Create app directory
+      ansible.builtin.file:
+        path: "{{ app_dir }}"
+        state: directory
+        owner: ec2-user
+        mode: '0755'
+
+    - name: Copy production docker-compose
+      ansible.builtin.copy:
+        src: ../docker-compose.prod.yml
+        dest: "{{ app_dir }}/docker-compose.yml"
+        owner: ec2-user
+        mode: '0644'
+
+    - name: Create backend directory
+      ansible.builtin.file:
+        path: "{{ app_dir }}/backend"
+        state: directory
+        owner: ec2-user
+        mode: '0755'
+
+    - name: Copy backend .env file
+      ansible.builtin.copy:
+        src: ../backend/.env
+        dest: "{{ app_dir }}/backend/.env"
+        owner: ec2-user
+        mode: '0600'
+
+    - name: Install unzip
+      ansible.builtin.yum:
+        name: unzip
+        state: present
+
+    - name: Install AWS CLI v2
+      ansible.builtin.shell: |
+        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip"
+        unzip -o /tmp/awscliv2.zip -d /tmp
+        /tmp/aws/install --update
+      args:
+        creates: /usr/local/bin/aws
+
+    - name: Login to ECR
+      ansible.builtin.shell: |
+        /usr/local/bin/aws ecr get-login-password --region {{ aws_region }} \
+        | docker login --username AWS --password-stdin {{ ecr_registry }}
+      become_user: ec2-user
+
+    - name: Pull latest images
+      ansible.builtin.shell: |
+        export ECR_REGISTRY={{ ecr_registry }}
+        docker-compose -f {{ app_dir }}/docker-compose.yml pull
+      become_user: ec2-user
+
+    - name: Run containers
+      ansible.builtin.shell: |
+        export ECR_REGISTRY={{ ecr_registry }}
+        docker-compose -f {{ app_dir }}/docker-compose.yml up -d
+      become_user: ec2-user
