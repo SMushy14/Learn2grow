@@ -3,7 +3,7 @@ services:
     build: ./frontend
     image: smushy14/learn2grow-frontend:latest
     ports:
-      - "3000:3000"
+      - "3000:80"
     depends_on:
       - backend
 

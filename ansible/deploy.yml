@@ -6,6 +6,8 @@
   vars:
     ecr_registry: "{{ ecr_registry }}"
     aws_region: "{{ aws_region }}"
+    aws_access_key_id: "{{ access_key_id }}"
+    aws_secret_access_key: "{{ aws_secret_access_key }}"
     app_dir: /home/ec2-user/app
 
   tasks:
@@ -18,8 +20,8 @@
 
     - name: Copy production docker-compose
       ansible.builtin.copy:
-        src: ../docker-compose.prod.yml
-        dest: "{{ app_dir }}/docker-compose.yml"
+        src: ../docker-compose.yml
+        dest: "{{ app_dir }}/docker-compose.prod.yml"
         owner: ec2-user
         mode: '0644'
 
@@ -38,7 +40,7 @@
         mode: '0600'
 
     - name: Install unzip
-      ansible.builtin.yum:
+      ansible.builtin.dnf:
         name: unzip
         state: present
 

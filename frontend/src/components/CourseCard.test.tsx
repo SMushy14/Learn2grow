@@ -4,7 +4,7 @@ import { Course } from "../types/Course";
 
 describe("CourseCard", () => {
   const mockCourse: Course = {
-    _id: "1",
+    _id: 1,
     title: "Introduction to React",
     description:
       "Learn the basics of React including components, props, and state",

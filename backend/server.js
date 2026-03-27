@@ -12,7 +12,9 @@ const app = express();
 connectDB();
 
 // Middleware
-app.use(cors()); // Allows your React frontend to communicate with this API
+app.use(cors({
+  origin: "http://13.247.97.237:3000"
+})); // Allows your React frontend to communicate with this API
 app.use(express.json()); // Allows Express to parse incoming JSON data in request bodies
 
 // Import routes
