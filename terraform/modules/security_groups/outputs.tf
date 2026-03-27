@@ -12,3 +12,8 @@ output "db_sg_id" {
   description = "Security group ID for the database"
   value       = aws_security_group.db.id
 }
+
+output "alb_sg_id" {
+  description = "Security group ID for the ALB"
+  value       = aws_security_group.alb.id
+}
