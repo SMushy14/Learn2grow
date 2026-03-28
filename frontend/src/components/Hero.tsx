@@ -8,7 +8,7 @@ const Hero = () => {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="text-center md:text-left">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-              Grow Your Skills. Shape Your Future Today.
+              Grow Your Skills. Shape Your Future.
             </h1>
             <p className="text-lg md:text-xl mb-8 text-indigo-100">
               Access thousands of high-quality courses taught by industry
