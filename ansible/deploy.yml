@@ -61,11 +61,11 @@
     - name: Pull latest images
       ansible.builtin.shell: |
         export ECR_REGISTRY={{ ecr_registry }}
-        docker-compose -f {{ app_dir }}/docker-compose.yml pull
+        docker-compose -f {{ app_dir }}/docker-compose.prod.yml pull
       become_user: ec2-user
 
     - name: Run containers
       ansible.builtin.shell: |
         export ECR_REGISTRY={{ ecr_registry }}
-        docker-compose -f {{ app_dir }}/docker-compose.yml up -d
+        docker-compose -f {{ app_dir }}/docker-compose.prod.yml up -d
       become_user: ec2-user
