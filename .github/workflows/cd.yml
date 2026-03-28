@@ -74,7 +74,12 @@ jobs:
       - name: Add known hosts
         run: |
           ssh-keyscan -H 13.247.97.237 >> ~/.ssh/known_hosts
-          ssh-keyscan -H 10.0.2.37 >> ~/.ssh/known_knows
+          ssh-keyscan -H 10.0.2.37 >> ~/.ssh/known_hosts
+
+      # Install Ansible
+      - name: Install Ansible
+        run: |
+          pip install ansible
 
       # Create backend and frontend .env files
       - name: Create backend .env file
