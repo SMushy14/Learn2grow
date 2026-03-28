@@ -74,6 +74,8 @@ jobs:
       - name: Add known hosts
         run: |
           mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/devops-key.pem
+          chmod 600 ~/.ssh/devops-key.pem
           ssh-keyscan -H 13.247.97.237 >> ~/.ssh/known_hosts || true
           ssh-keyscan -H 10.0.2.37 >> ~/.ssh/known_hosts || true
 
