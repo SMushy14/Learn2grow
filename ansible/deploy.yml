@@ -35,7 +35,7 @@
     - name: Copy backend .env file
       ansible.builtin.copy:
         src: ../backend/.env
-        dest: "{{ app_dir }}/backend/.env"
+        dest: /home/ec2-user/app/backend/.env
         owner: ec2-user
         mode: '0600'
 
