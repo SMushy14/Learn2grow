@@ -29,7 +29,6 @@ jobs:
         run: |
           cd backend
           npm run test
-
       # Configure AWS credentials securely
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -74,21 +73,17 @@ jobs:
       - name: Add known hosts
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/devops-key.pem
-          chmod 600 ~/.ssh/devops-key.pem
           ssh-keyscan -H 13.247.97.237 >> ~/.ssh/known_hosts || true
           ssh-keyscan -H 10.0.2.37 >> ~/.ssh/known_hosts || true
-
       # Install Ansible
       - name: Install Ansible
         run: |
           pip install ansible
-
       # Install Ansible
       - name: Deploy with Ansible
         run: |
           cd ansible
-          ansible-playbook playbook.yml -i inventory.ini
+          ansible-playbook playbook.yml -i inventory.ini vvv
           ansible-playbook deploy.yml -i inventory.ini   --extra-vars "ecr_registry=${{ secrets.ECR_REGISTRY }} aws_region=${{ secrets.AWS_REGION }}"
         env:
           BACKEND_END: ${{ secrets.BACKEND_ENV }}
