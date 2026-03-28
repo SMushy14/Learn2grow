@@ -90,6 +90,7 @@ jobs:
       # Install Ansible
       - name: Deploy with Ansible
         run: |
-          cd ansible
           ansible-playbook playbook.yml -i inventory.ini -vvv
           ansible-playbook deploy.yml -i inventory.ini   --extra-vars "ecr_registry=953216550432.dkr.ecr.af-south-1.amazonaws.com aws_region=af-south-1"
+        env:
+          BACKEND_END: ${{ secrets.BACKEND_ENV }}
