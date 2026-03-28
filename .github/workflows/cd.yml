@@ -86,7 +86,7 @@ jobs:
       - name: Deploy with Ansible
         run: |
           cd ansible
-          ansible-playbook playbook.yml -i inventory.ini -vvv
-          ansible-playbook deploy.yml -i inventory.ini   --extra-vars "ecr_registry=953216550432.dkr.ecr.af-south-1.amazonaws.com aws_region=af-south-1"
+          ansible-playbook playbook.yml -i inventory.ini
+          ansible-playbook deploy.yml -i inventory.ini   --extra-vars "ecr_registry=${{ secrets.ECR_REGISTRY }} aws_region=${{ secrets.AWS_REGION }}"
         env:
           BACKEND_END: ${{ secrets.BACKEND_ENV }}
