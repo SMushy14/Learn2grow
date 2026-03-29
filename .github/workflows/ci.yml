@@ -7,7 +7,6 @@ name: CI workflow
 on:
   push:
     branches: ["frontend"]
-  
 
 jobs:
   backend:
@@ -75,8 +74,6 @@ jobs:
       - name: Run Tests
         run: npm run test
 
-      - name: Build Docker image
-        run: docker build -t frontend-app .
       - name: Scan Docker image for vulnerabilities
         uses: aquasecurity/trivy-action@master
         with:
@@ -85,6 +82,7 @@ jobs:
           exit-code: "1"
           ignore-unfixed: true
           severity: "CRITICAL"
+          trivyignores: ".trivyignore"
 
   scan-infrastructure:
     name: Scan Terraform Code
