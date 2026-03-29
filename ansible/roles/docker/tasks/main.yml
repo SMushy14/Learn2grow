@@ -1,13 +1,13 @@
 ---
 - name: Update all packages
   ansible.builtin.dnf:
-  ansible.builtin.dnf:
+  
     name: "*"
     state: latest
 
 - name: Install Docker
   ansible.builtin.dnf:
-  ansible.builtin.dnf:
+  
     name: docker
     state: present
 
