@@ -6,9 +6,8 @@ name: CI workflow
 
 on:
   push:
-    branches: ["devbranch"]
-  pull_request:
-    branches: ["main"]
+    branches: ["frontend"]
+  
 
 jobs:
   backend:
