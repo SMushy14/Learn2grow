@@ -2,11 +2,11 @@ terraform {
   required_version = ">= 1.5.0"
 
   backend "s3" {
-    bucket         = "learn2grow-terraform-state"
-    key            = "terraform.tfstate"
-    region         = "af-south-1"
-    dynamodb_table = "learn2grow-terraform-locks"
-    encrypt        = true
+    bucket       = "learn2grow-terraform-state"
+    key          = "terraform.tfstate"
+    region       = "af-south-1"
+    use_lockfile = true
+    encrypt      = true
   }
 
   required_providers {
