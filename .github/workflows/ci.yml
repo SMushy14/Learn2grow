@@ -6,7 +6,7 @@ name: CI workflow
 
 on:
   push:
-    branches: ["main"]
+    branches: ["frontend"]
   pull_request:
     branches: ["main"]
 
@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [20.x]
+        node-version: [22.x]
     defaults:
       run:
         working-directory: backend
@@ -30,7 +30,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci --legacy-peer-deps
 
       - name: Lint code
         run: npm run lint
@@ -40,12 +40,20 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t learn2grow-backend .
+      - name: Scan Docker image for vulnerabilities
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: "learn2grow-backend" # Must match the tag from your build step
+          format: "table"
+          exit-code: "1" # This is crucial! It fails the step if issues are found.
+          ignore-unfixed: true
+          severity: "CRITICAL" # Fail only for Critical issues
 
   frontend:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [20.x]
+        node-version: [22.x]
     defaults:
       run:
         working-directory: frontend
@@ -67,6 +75,29 @@ jobs:
 
       - name: Run Tests
         run: npm run test
-
       - name: Build Docker image
         run: docker build -t frontend-app .
+
+      - name: Scan Docker image for vulnerabilities
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: "frontend-app"
+          format: "table"
+          exit-code: "1"
+          ignore-unfixed: true
+          severity: "CRITICAL"
+          trivyignores: ".trivyignore"
+
+  scan-infrastructure:
+    name: Scan Terraform Code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Scan Terraform code
+        uses: aquasecurity/tfsec-action@v1.0.0
+        with:
+          working_directory: terraform
+          soft_fail: false
+          additional_args: --minimum-severity CRITICAL

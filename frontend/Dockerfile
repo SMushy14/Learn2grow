@@ -1,4 +1,4 @@
-FROM node:20-alpine AS build
+FROM node:22-alpine AS build
 
 # Create app directory
 WORKDIR /app
@@ -20,4 +20,4 @@ RUN chown -R node:node /app
 USER node
 
 # Start the app
-CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+CMD ["serve", "-s", "dist", "-l", "3000"]

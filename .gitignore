@@ -25,3 +25,18 @@ Thumbs.db
 
 # Coverage reports
 coverage/
+
+# Terraform files
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+*.pem
+*.key
+crash.log
+
+# Ansible files
+*.pem
+*.key
+id_rsa
+.env
