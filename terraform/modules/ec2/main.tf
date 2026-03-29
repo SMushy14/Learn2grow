@@ -46,6 +46,11 @@ resource "aws_instance" "app" {
   key_name               = var.key_pair_name
   iam_instance_profile   = aws_iam_instance_profile.app.name
 
+  root_block_device {
+    volume_size = 20
+    volume_type = "gp3"
+  }
+
   tags = {
     Name        = "${var.project_name}-${var.environment}-app"
     Environment = var.environment
