@@ -14,31 +14,31 @@
         path: "{{ app_dir }}"
         state: directory
         owner: ec2-user
-        mode: '0755'
+        mode: "0755"
 
     - name: Copy production docker-compose
       ansible.builtin.copy:
         src: ../docker-compose.prod.yml
         dest: "{{ app_dir }}/docker-compose.yml"
         owner: ec2-user
-        mode: '0644'
+        mode: "0644"
 
     - name: Create backend directory
       ansible.builtin.file:
         path: "{{ app_dir }}/backend"
         state: directory
         owner: ec2-user
-        mode: '0755'
+        mode: "0755"
 
     - name: Copy backend .env file
       ansible.builtin.copy:
         src: ../backend/.env
         dest: "{{ app_dir }}/backend/.env"
         owner: ec2-user
-        mode: '0600'
+        mode: "0600"
 
     - name: Install unzip
-      ansible.builtin.yum:
+      ansible.builtin.dnf:
         name: unzip
         state: present
 
