@@ -80,6 +80,11 @@ jobs:
         run: |
           pip install ansible
       # Install Ansible
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/devops-key.pem
+          chmod 600 ~/.ssh/devops-key.pem
       - name: Deploy with Ansible
         run: |
           cd ansible
