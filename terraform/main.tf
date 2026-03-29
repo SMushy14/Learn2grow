@@ -6,6 +6,7 @@ terraform {
     key            = "terraform.tfstate"
     region         = "af-south-1"
     dynamodb_table = "learn2grow-terraform-locks"
+    use_lockfile   = true
     encrypt        = true
   }
 
