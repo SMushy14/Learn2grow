@@ -1,23 +1,7 @@
+---
 - name: Configure App VM
   hosts: app
   become: true
-  tasks:
-    - name: Install Docker and dependencies
-      package:
-        name:
-          - docker
-          - python3
-          - git
-        state: present
 
-    - name: Start Docker
-      service:
-        name: docker
-        state: started
-        enabled: true
-
-    - name: Add user to docker group
-      user:
-        name: ec2-user
-        groups: docker
-        append: yes
+  roles:
+    - docker

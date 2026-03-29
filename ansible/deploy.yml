@@ -6,8 +6,6 @@
   vars:
     ecr_registry: "{{ ecr_registry }}"
     aws_region: "{{ aws_region }}"
-    aws_access_key_id: "{{ access_key_id }}"
-    aws_secret_access_key: "{{ aws_secret_access_key }}"
     app_dir: /home/ec2-user/app
 
   tasks:
@@ -20,8 +18,8 @@
 
     - name: Copy production docker-compose
       ansible.builtin.copy:
-        src: ../docker-compose.yml
-        dest: "{{ app_dir }}/docker-compose.prod.yml"
+        src: ../docker-compose.prod.yml
+        dest: "{{ app_dir }}/docker-compose.yml"
         owner: ec2-user
         mode: '0644'
 
@@ -32,15 +30,15 @@
         owner: ec2-user
         mode: '0755'
 
-    - name: Create backend .env file
+    - name: Copy backend .env file
       ansible.builtin.copy:
+        src: ../backend/.env
         dest: "{{ app_dir }}/backend/.env"
-        content: "{{ lookup('env', 'BACKEND_ENV') }}"
         owner: ec2-user
         mode: '0600'
 
     - name: Install unzip
-      ansible.builtin.dnf:
+      ansible.builtin.yum:
         name: unzip
         state: present
 
@@ -61,11 +59,11 @@
     - name: Pull latest images
       ansible.builtin.shell: |
         export ECR_REGISTRY={{ ecr_registry }}
-        docker-compose -f {{ app_dir }}/docker-compose.prod.yml pull
+        docker-compose -f {{ app_dir }}/docker-compose.yml pull
       become_user: ec2-user
 
     - name: Run containers
       ansible.builtin.shell: |
         export ECR_REGISTRY={{ ecr_registry }}
-        docker-compose -f {{ app_dir }}/docker-compose.prod.yml up -d
+        docker-compose -f {{ app_dir }}/docker-compose.yml up -d
       become_user: ec2-user

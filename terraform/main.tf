@@ -5,6 +5,7 @@ terraform {
     bucket         = "learn2grow-terraform-state"
     key            = "terraform.tfstate"
     region         = "af-south-1"
+    dynamodb_table = "learn2grow-terraform-locks"
     use_lockfile   = true
     encrypt        = true
   }
@@ -57,4 +58,19 @@ module "ecr" {
   source       = "./modules/ecr"
   project_name = var.project_name
   environment  = var.environment
+}
+
+module "alb" {
+  source            = "./modules/alb"
+  project_name      = var.project_name
+  environment       = var.environment
+  vpc_id            = module.vpc.vpc_id
+  public_subnet_ids = module.vpc.public_subnet_ids
+  security_group_id = module.security_groups.alb_sg_id
+  instance_id       = module.ec2.instance_id
+}
+
+output "app_url" {
+  description = "Public URL of the application"
+  value       = "http://${module.alb.alb_dns_name}"
 }
