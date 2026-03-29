@@ -1,4 +1,4 @@
-FROM node:25-alpine AS build
+FROM node:22-alpine AS build
 
 # Create app directory
 WORKDIR /app
@@ -7,13 +7,17 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install app dependencies
-RUN npm install
+RUN npm ci --only=prod --legacy-peer-deps
 
 # Copy the app
 COPY . .
 
 # Expose the port
-EXPOSE 8000
+EXPOSE 5000
+
+# Non-root user for security
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+USER appuser
 
 # Start the server
 CMD ["node", "server.js"]
