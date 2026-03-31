@@ -1,20 +1,23 @@
 FROM node:22-alpine AS build
 
+# Create app directory
 WORKDIR /app
 
+# Copy package.json and package-lock.json
 COPY package*.json ./
+
+# Install app dependencies
 RUN npm ci --legacy-peer-deps
 
+# Copy the app
 COPY . .
-RUN npm run build
 
-FROM nginx:1.27-alpine AS runtime
-
-# Keep container port aligned with existing compose mapping.
-RUN sed -i 's/listen       80;/listen       3000;/' /etc/nginx/conf.d/default.conf
-
-COPY --from=build /app/dist /usr/share/nginx/html
-
+# Expose the port
 EXPOSE 3000
 
-CMD ["nginx", "-g", "daemon off;"]
+# Non-root user for security
+RUN chown -R node:node /app
+USER node
+
+# Start the app
+CMD ["serve", "-s", "dist", "-l", "3000"]
