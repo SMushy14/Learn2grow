@@ -271,7 +271,7 @@ npm run dev
 
 [Access Live App](http://13.247.108.112:3000/)
 
-Replace with your actual production URL before submission.
+
 
 ## Architecture Overview
 
