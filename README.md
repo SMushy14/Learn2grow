@@ -1,204 +1,257 @@
 # Learn2grow
+
 ## Problem Statement
-Many students in Africa rely only on classroom teaching and they are therefore limited to learning materials and other skills development. The Rwandan government has played a good part in providing laptops to public schools even in rural areas but still student don't have access to structured learning resources that resonate with their syllabus and also other resources that can improve their skills. Learn2grow is a platfrom that connects students with local teachers and coaches who have structured courses that go beyond class syllabus.
+
+Many students in Africa rely only on classroom teaching and are therefore limited to learning materials and skills development. The Rwandan government has played a good part in providing laptops to public schools even in rural areas, but students still don't have access to structured learning resources that resonate with their syllabus. Learn2grow is a platform that connects students with local teachers and coaches who have structured courses that go beyond the class syllabus.
 
 ## Users
-- Students - They can browse, enroll and access courses and learning materials
-- Teachers/ Coaches - They upload and manage contents in their course
-- Admins - They approve and manage courses to be displayed on the main platform/page
 
-## Technology
-
-### Frontend
-- React 18(Vite + Typescript) - UI Library, Buils tool, dev server + Type safety
-- Tailwind CSS - Utility-first CSS framework
-### Backend
-- Node.js + Express
-### Database
-- MongoDB
-### DevOps
-- Docker + Cloud
-
-
-## License
-
-MIT License - feel free to use this project for learning or commercial purposes.
+- **Students** - Browse, enroll, and access courses and learning materials
+- **Teachers/Coaches** - Upload and manage content in their courses
+- **Admins** - Approve and manage courses to be displayed on the platform
 
 ## Features
-1. User authentication with roles(admin, student, Teacher/Coach)
-2. Course listing with search functionality
-3. Taecher and Admin dashboard for course upload and approval
-4. Student course enrollment
 
-## 📁 Project Structure
+1. User authentication with roles (Admin, Student, Teacher/Coach)
+2. Course listing with search and filter functionality
+3. Teacher and Admin dashboard for course upload and approval
+4. Student course enrollment
+5. Multi-language support (English, Kinyarwanda, French)
+
+---
+
+## Architecture
+
+### Application Architecture
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                        Internet                          │
+└───────────────────────────┬─────────────────────────────┘
+                            │
+                ┌───────────▼───────────┐
+                │  Application Load     │
+                │  Balancer (ALB)       │
+                │  Port 80              │
+                └───────────┬───────────┘
+                            │
+              ┌─────────────▼─────────────┐
+              │     EC2 App Server        │
+              │     (Private Subnet)      │
+              │  ┌────────┐ ┌──────────┐  │
+              │  │Frontend│ │ Backend  │  │
+              │  │ :3000  │ │  :5000   │  │
+              │  └────────┘ └──────────┘  │
+              └───────────────────────────┘
+                            │
+              ┌─────────────▼─────────────┐
+              │         MongoDB           │
+              │   (Atlas Cloud / Local)   │
+              └───────────────────────────┘
+```
+
+### AWS Infrastructure (af-south-1)
+
+```
+VPC (10.0.0.0/16)
+├── Public Subnets
+│   ├── Bastion Host (SSH gateway)
+│   └── ALB (Application Load Balancer)
+├── Private Subnets
+│   └── EC2 App Server (Docker containers)
+└── Supporting Services
+    ├── ECR (Container Registry)
+    │   ├── devops-project-dev-frontend
+    │   └── devops-project-dev-backend
+    ├── NAT Gateway (outbound internet for private subnet)
+    └── IAM Role (EC2 → ECR read access)
+```
+
+### Technology Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Frontend | React 18, TypeScript, Vite, Tailwind CSS |
+| Backend | Node.js, Express 5 |
+| Database | MongoDB (Atlas) |
+| Containerization | Docker, Docker Compose |
+| Container Registry | AWS ECR |
+| Infrastructure | Terraform (AWS) |
+| Configuration Management | Ansible |
+| CI/CD | GitHub Actions |
+| Hosting | AWS EC2 (af-south-1) |
+
+---
+
+## Git to Production Flow
+
+```
+Developer pushes code
+        │
+        ▼
+┌───────────────┐
+│  GitHub       │
+│  (devbranch)  │
+└───────┬───────┘
+        │
+        ▼
+┌───────────────────────────────────┐
+│  GitHub Actions CI (ci.yml)       │
+│  - Install dependencies           │
+│  - Lint frontend & backend        │
+│  - Run tests                      │
+│  - Build Docker images            │
+│  - Scan with Trivy (security)     │
+└───────┬───────────────────────────┘
+        │ on push to devbranch
+        ▼
+┌───────────────────────────────────┐
+│  GitHub Actions CD (cd.yml)       │
+│  - Build frontend & backend       │
+│  - Push images to AWS ECR         │
+│  - Run Ansible deploy playbook    │
+└───────┬───────────────────────────┘
+        │
+        ▼
+┌───────────────────────────────────┐
+│  Ansible (deploy.yml)             │
+│  - Copy docker-compose.prod.yml   │
+│  - Copy backend .env              │
+│  - Login to ECR                   │
+│  - Pull latest images             │
+│  - Run containers (docker-compose)│
+└───────┬───────────────────────────┘
+        │
+        ▼
+┌───────────────────────────────────┐
+│  EC2 App Server                   │
+│  - Frontend container (:3000)     │
+│  - Backend container (:5000)      │
+│  - Accessible via ALB             │
+└───────────────────────────────────┘
+```
+
+### Manual Deployment Steps
+
+**1. Provision infrastructure (first time only):**
+```bash
+cd terraform/
+terraform init
+terraform apply
+```
+
+**2. Provision the server (first time only):**
+```bash
+cd ansible/
+ansible-playbook playbook.yml -i inventory.ini
+```
+
+**3. Deploy the application:**
+```bash
+ansible-playbook deploy.yml -i inventory.ini \
+  --extra-vars "ecr_registry=381299989698.dkr.ecr.af-south-1.amazonaws.com"
+```
+
+**4. Verify connectivity:**
+```bash
+ansible all -i inventory.ini -m ping
+```
+
+---
+
+## Project Structure
 
 ```
 Learn2grow/
-├── frontend/
+├── frontend/                    # React + TypeScript frontend
 │   ├── src/
-│   │   ├── components/
-│   │   │   ├── Navbar.tsx          # Navigation bar with mobile menu
-│   │   │   ├── Hero.tsx            # Hero section with headline and CTA
-│   │   │   ├── CourseCard.tsx      # Reusable course card component
-│   │   │   ├── CoursesSection.tsx  # Courses grid section
-│   │   │   └── Footer.tsx          # Footer with links and social media
-│   │   ├── data/
-│   │   │   └── courses.ts          # Sample course data
-│   │   ├── types/
-│   │   │   └── Course.ts           # TypeScript interface for Course
-│   │   ├── App.tsx                 # Main app component
-│   │   ├── main.tsx                # Entry point
-│   │   ├── index.css               # Global styles with Tailwind
-│   │   └── vite-env.d.ts           # Vite type definitions
-│   ├── index.html                  # HTML template
-│   ├── package.json                # Dependencies and scripts
-│   ├── tsconfig.json               # TypeScript configuration
-│   ├── tailwind.config.js          # Tailwind CSS configuration
-│   ├── postcss.config.js           # PostCSS configuration
-│   ├── vite.config.ts              # Vite configuration
-│   └── .gitignore                  # Git ignore file
-├── LICENSE                         # License file
-└── README.md                       # Project documentation
+│   │   ├── components/         # UI components
+│   │   ├── types/              # TypeScript interfaces
+│   │   ├── data/               # Sample course data
+│   │   ├── services/           # API services
+│   │   └── App.tsx
+│   └── Dockerfile
+├── backend/                     # Node.js + Express backend
+│   ├── src/
+│   │   ├── controllers/        # Business logic
+│   │   ├── models/             # Mongoose schemas
+│   │   ├── routes/             # API routes
+│   │   └── middlewares/        # Auth middleware
+│   ├── server.js
+│   └── Dockerfile
+├── terraform/                   # AWS Infrastructure as Code
+│   ├── main.tf
+│   ├── variables.tf
+│   ├── outputs.tf
+│   └── modules/
+│       ├── vpc/
+│       ├── ec2/
+│       ├── ecr/
+│       ├── alb/
+│       ├── bastion/
+│       └── security_groups/
+├── ansible/                     # Configuration & Deployment
+│   ├── playbook.yml            # Server provisioning
+│   ├── deploy.yml              # Application deployment
+│   ├── inventory.ini           # Host inventory
+│   └── roles/docker/           # Docker installation role
+├── .github/workflows/           # CI/CD pipelines
+│   ├── ci.yml
+│   ├── cd.yml
+│   └── deploy.yml
+├── docker-compose.yml           # Local development
+└── docker-compose.prod.yml      # Production
 ```
 
-## Frontend Features
+---
 
-- **Responsive Design**: Fully responsive layout that works on all devices
-- **Modern UI**: Clean and modern design using Tailwind CSS
-- **TypeScript**: Fully typed components for better development experience
-- **Component-Based**: Well-structured and reusable components
-- **Sticky Navigation**: Navbar that sticks to the top with hamburger menu on mobile
-- **Course Cards**: Beautiful course cards with hover effects
-- **Hero Section**: Eye-catching hero section with call-to-action buttons
+## Running Locally
 
-## Running the application with Docker Compose
-### Requirements:
-1. Install Docker in your machine
-2. Install Docker compose in your machine
-
-### Run Docker compose command
+### With Docker Compose
 ```bash
 docker-compose up --build
 ```
-This command will build images for both frontend and backend, start the MongoDB, links all containers and you can access the application in the ports:
-`http://localhost:3000` for frontend and `http://localhost:5000`for backend.
-You can stop the application with;
+- Frontend: http://localhost:3000 / http://13.247.108.112:3000/
+- Backend: http://localhost:5000 / http://13.247.108.112:5000/
+
 ```bash
 docker-compose down
 ```
 
-## 📦 Installation
+### Without Docker
 
-1. Navigate to the frontend directory:
-
+**Backend:**
 ```bash
-cd frontend
-```
-
-2. Install dependencies:
-
-```bash
+cd backend
 npm install
-```
-
-3. Start the development server:
-
-```bash
 npm run dev
 ```
 
-4. Build for production:
-
+**Frontend:**
 ```bash
-npm run build
+cd frontend
+npm install
+npm run dev
 ```
 
-5. Preview production build:
+---
 
-```bash
-npm run preview
-```
+## API Endpoints
 
-## 🎨 Components Overview
+| Method | Endpoint | Access |
+|--------|----------|--------|
+| POST | `/api/auth/register` | Public |
+| POST | `/api/auth/login` | Public |
+| GET | `/api/courses` | Public |
+| GET | `/api/courses/:id` | Public |
+| POST | `/api/courses` | Teachers |
+| GET | `/api/courses/teacher/my-courses` | Teachers |
+| GET | `/api/courses/admin/all` | Admins |
+| PUT | `/api/courses/:id/status` | Admins |
+| GET | `/api/health` | Public |
 
-### Navbar
+---
 
-- Sticky navigation bar
-- Responsive hamburger menu for mobile
-- Smooth navigation links
+## License
 
-### Hero
-
-- Gradient background
-- Compelling headline and description
-- Two call-to-action buttons
-- Responsive image placeholder
-
-### CourseCard
-
-- Course image with category badge
-- Course title and description
-- Instructor information
-- Enroll button with hover effects
-
-### CoursesSection
-
-- Responsive grid layout (1/2/3 columns)
-- Displays all courses from data
-- "View All Courses" button
-
-### Footer
-
-- Platform information
-- Quick links navigation
-- Social media icons
-- Copyright information
-
-## 🎯 Key Features Implemented
-
-✅ Fully responsive design
-✅ TypeScript interfaces for type safety
-✅ Reusable components
-✅ Clean and readable code
-✅ Modern UI with Tailwind utility classes
-✅ Smooth transitions and hover effects
-✅ Accessible navigation
-✅ SEO-friendly structure
-
-## 🎨 Customization
-
-### Adding New Courses
-
-Edit `frontend/src/data/courses.ts` to add or modify courses:
-
-```typescript
-{
-  id: 7,
-  title: 'Your Course Title',
-  description: 'Course description',
-  instructor: 'Instructor Name',
-  image: 'image-url',
-  category: 'Category'
-}
-```
-
-### Changing Colors
-
-Modify `frontend/tailwind.config.js` to customize the color scheme.
-
-### Adding Sections
-
-Create new components in `frontend/src/components/` and import them in `App.tsx`.
-
-## 📱 Responsive Breakpoints
-
-- Mobile: < 768px
-- Tablet: 768px - 1024px
-- Desktop: > 1024px
-
-## 🌐 Browser Support
-
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
+MIT License - feel free to use this project for learning or commercial purposes.
