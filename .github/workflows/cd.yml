@@ -3,6 +3,11 @@ name: CD - Deploy to Production
 on:
   push:
     branches:
+      - main
+      - deploy-branch
+  pull_request:
+    branches:
+      - main
       - deploy-branch
 
 jobs:
