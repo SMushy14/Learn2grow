@@ -6,7 +6,7 @@ name: CI workflow
 
 on:
   push:
-    branches: [""]
+    branches: ["deploy-branch"]
   pull_request:
     branches: ["main"]
 
