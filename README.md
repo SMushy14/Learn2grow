@@ -79,6 +79,7 @@ VPC (10.0.0.0/16)
 | Infrastructure | Terraform (AWS) |
 | Configuration Management | Ansible |
 | CI/CD | GitHub Actions |
+  DEVSECOPS | Trivy (Container Scanning) | tfsec (Terraform Scanning) |
 | Hosting | AWS EC2 (af-south-1) |
 
 ---
@@ -91,7 +92,7 @@ Developer pushes code
         ▼
 ┌───────────────┐
 │  GitHub       │
-│  (devbranch)  │
+│  (main)  │
 └───────┬───────┘
         │
         ▼
@@ -251,6 +252,12 @@ npm run dev
 | GET | `/api/health` | Public |
 
 ---
+
+## Team Members
+
+- Sharon (Role: Configuration Management (Ansible) & CD pipeline)
+- Nigel (Role: Infrastructure as Code (IaC))
+- Fred (Role: DevSecOps Integration)
 
 ## License
 
