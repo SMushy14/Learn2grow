@@ -47,7 +47,7 @@
 
 - name: Pull frontend image from ECR
   docker_image:
-    name: "381299989698.dkr.ecr.af-south-1.amazonaws.com/learn2grow-frontend:v2"
+    name: "381299989698.dkr.ecr.af-south-1.amazonaws.com/learn2grow-frontend"
     source: pull
 
 - name: Copy docker-compose template
