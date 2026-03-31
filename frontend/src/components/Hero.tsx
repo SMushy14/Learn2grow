@@ -26,7 +26,7 @@ const Hero = () => {
                 href="#contact"
                 className="bg-indigo-700 text-white px-8 py-3 rounded-lg font-semibold hover:bg-indigo-800 transition-colors border-2 border-white"
               >
-                Get Started
+                Get Started Today
               </a>
             </div>
           </div>
