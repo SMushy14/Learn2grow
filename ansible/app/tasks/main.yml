@@ -1,0 +1,66 @@
+- name: Update and upgrade system packages
+  apt:
+    update_cache: no
+    upgrade: no
+
+- name: Install required packages
+  apt:
+    name:
+      - docker.io
+      - docker-compose
+      - python3-pip
+      - awscli
+      - git
+      - curl
+    state: present
+    update_cache: yes
+
+- name: Ensure Docker service is running
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Create app directory
+  file:
+    path: /home/ubuntu/app
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: '0755'
+
+- name: Login to AWS ECR
+  shell: |
+    aws ecr get-login-password --region af-south-1 \
+    | docker login --username AWS --password-stdin 381299989698.dkr.ecr.af-south-1.amazonaws.com
+  environment:
+    AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID}}
+    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+    AWS_REGION: af-south-1
+  args:
+    executable: /bin/bash
+
+- name: Pull backend image from ECR
+  docker_image:
+    name: "381299989698.dkr.ecr.af-south-1.amazonaws.com/learn2grow-backend"
+    source: pull
+
+- name: Pull frontend image from ECR
+  docker_image:
+    name: "381299989698.dkr.ecr.af-south-1.amazonaws.com/learn2grow-frontend:v2"
+    source: pull
+
+- name: Copy docker-compose template
+  template:
+    src: docker-compose.yml.j2
+    dest: /home/ubuntu/app/docker-compose.yml
+  vars:
+    ecr_registry: "381299989698.dkr.ecr.af-south-1.amazonaws.com"
+    backend_image: "381299989698.dkr.ecr.af-south-1.amazonaws.com/learn2grow-backend:latest"
+    frontend_image: "381299989698.dkr.ecr.af-south-1.amazonaws.com/learn2grow-frontend:latest"
+
+- name: Start app via Docker Compose
+  community.docker.docker_compose:
+    project_src: /home/ubuntu/app
+    state: present
+    pull: yes

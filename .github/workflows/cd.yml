@@ -3,7 +3,7 @@ name: CD - Deploy to Production
 on:
   push:
     branches:
-      - devbranch
+      - deploy-branch
 
 jobs:
   deploy:
