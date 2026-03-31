@@ -411,7 +411,7 @@ terraform destroy
 
 [Watch Demo Video](https://drive.google.com/file/d/1-ZyQSxiGVKfFj2nIxJtWUXgfR7TKieEu/view?usp=sharing)
 
-Replace with your actual unlisted YouTube or Drive link.
+
 
 ## License
 
