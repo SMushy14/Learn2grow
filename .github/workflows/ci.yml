@@ -75,7 +75,7 @@ jobs:
 
       - name: Run Tests
         run: npm run test
-      - name: Build Docker image
+      - name: Docker image
         run: docker build -t frontend-app .
 
       - name: Scan Docker image for vulnerabilities
