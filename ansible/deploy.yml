@@ -55,6 +55,9 @@
         /usr/local/bin/aws ecr get-login-password --region {{ aws_region }} \
         | docker login --username AWS --password-stdin {{ ecr_registry }}
       become_user: ec2-user
+      environment:
+        AWS_ACCESS_KEY_ID: "{{ aws_access_key }}"
+        AWS_SECRET_ACCESS_KEY: "{{ aws_secret_key }}"
 
     - name: Pull latest images
       ansible.builtin.shell: |

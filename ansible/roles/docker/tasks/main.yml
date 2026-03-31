@@ -1,12 +1,10 @@
 ---
 - name: Update all packages
-  ansible.builtin.yum:
   ansible.builtin.dnf:
     name: "*"
     state: latest
 
 - name: Install Docker
-  ansible.builtin.yum:
   ansible.builtin.dnf:
     name: docker
     state: present
@@ -33,4 +31,4 @@
   ansible.posix.authorized_key:
     user: ec2-user
     state: present
-    key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC9F+ibaJzoJAArTGAIjMk4jpngfewxDd3k3gqSxXTWQ7/qWDTTVG9AW/0am0kdtU59DCLPzmSMsC0ghOO9DXilxTnD38HMuCAdWdpl8i3cWzmcTEKq0A/fUIT/wmzOnSWrUtFSUoxfV9dhRUnSTD9acfhAyLaMIMFGRGxxb6/U/b3PibfGnfstQCmohTk/1WMJtPOtdtmPce2YQThz2UQRZjJizH/31qIgTZgReIDxIKAPCSw0R36LkmEibvAjCHCveAGjizo0gq//lEIMId8HWSAklxRpd81cmmFJmLNk5v5nIVm1PlnCVBMTDWL/fr939N/8gjT98MNGxeSQy5XzLVlruvDMwywKf9AxkdY3Ux9B4DlZPgRhURQxr4FdQ2+pJIx0TwcV9HDKsfYqu+WYr/ZStDLNO/KKMvC3rQtkaQILiIPodrGcA5eyI4WM7YEDoHaB3ROExGGHjdS6p68rdnWNuc1PdP/t1jgmhQzGEuUSb+RbKXRVZ+4ca70JDjPAQw+SCoRS/7XQmjK/tgTkFc+TDXkWdXhepctcHwXC9xh05YsyGJSu3oMmLsjRfENYGomoqbQUTkPy4Jd3UUkC9+IK6FmPUeQHf1UBMyL5Ge+eohgJcTe3KpSj7gpJmiGCcSXTUhpWWGLWHVh1yQnDyDx81WGJfFFudYnKP1XoqQ== github-actions"
+    key: "ssh-rsa AAAAB3NzaC1yc2AAAADAQABAAACAQC9F+ibaJzoJAArTGAIjMk4jpngfewxDd3k3gqSxXTWQ7/qWDTTVG9AW/0am0kdtU59DCLPzmSMsC0ghOO9DXilxTnD38HMuCAdWdpl8i3cWzmcTEKq0A/fUIT/wmzOnSWrUtFSUoxfV9dhRUnSTD9acfhAyLaMIMFGRGxxb6/U/b3PibfGnfstQCmohTk/1WMJtPOtdtmPce2YQThz2UQRZjJizH/31qIgTZgReIDxIKAPCSw0R36LkmEibvAjCHCveAGjizo0gq//lEIMId8HWSAklxRpd81cmmFJmLNk5v5nIVm1PlnCVBMTDWL/fr939N/8gjT98MNGxeSQy5XzLVlruvDMwywKf9AxkdY3Ux9B4DlZPgRhURQxr4FdQ2+pJIx0TwcV9HDKsfYqu+WYr/ZStDLNO/KKMvC3rQtkaQILiIPodrGcA5eyI4WM7YEDoHaB3ROExGGHjdS6p68rdnWNuc1PdP/t1jgmhQzGEuUSb+RbKXRVZ+4ca70JDjPAQw+SCoRS/7XQmjK/tgTkFc+TDXkWdXhepctcHwXC9xh05YsyGJSu3oMmLsjRfENYGomoqbQUTkPy4Jd3UUkC9+IK6FmPUeQHf1UBMyL5Ge+eohgJcTe3KpSj7gpJmiGCcSXTUhpWWGLWHVh1yQnDyDx81WGJfFFudYnKP1XoqQ== github-actions"
