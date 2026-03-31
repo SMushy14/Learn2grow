@@ -1,204 +1,295 @@
-# Learn2grow
-## Problem Statement
-Many students in Africa rely only on classroom teaching and they are therefore limited to learning materials and other skills development. The Rwandan government has played a good part in providing laptops to public schools even in rural areas but still student don't have access to structured learning resources that resonate with their syllabus and also other resources that can improve their skills. Learn2grow is a platfrom that connects students with local teachers and coaches who have structured courses that go beyond class syllabus.
+# Learn2Grow - Complete DevOps Pipeline Project
 
-## Users
-- Students - They can browse, enroll and access courses and learning materials
-- Teachers/ Coaches - They upload and manage contents in their course
-- Admins - They approve and manage courses to be displayed on the main platform/page
+Learn2Grow is an education platform that connects students with local teachers and coaches through structured courses. This repository demonstrates a full DevOps workflow from infrastructure provisioning to automated deployment.
 
-## Technology
+## Team Members
 
-### Frontend
-- React 18(Vite + Typescript) - UI Library, Buils tool, dev server + Type safety
-- Tailwind CSS - Utility-first CSS framework
-### Backend
-- Node.js + Express
-### Database
-- MongoDB
-### DevOps
-- Docker + Cloud
+- Member 1 - Role: Terraform and Infrastructure as Code
+- Member 2 - Role: Ansible and Production Deployment
+- Member 3 - Role: CI/CD and Security Scanning
 
+Replace the names and roles above before final submission.
 
-## License
+## Live Application
 
-MIT License - feel free to use this project for learning or commercial purposes.
+- Live URL: http://YOUR_PUBLIC_URL
+- API Base URL: http://YOUR_PUBLIC_URL:5000/api
 
-## Features
-1. User authentication with roles(admin, student, Teacher/Coach)
-2. Course listing with search functionality
-3. Taecher and Admin dashboard for course upload and approval
-4. Student course enrollment
+Replace these URLs with your deployed endpoints.
 
-## 📁 Project Structure
+## Project Overview
 
-```
-Learn2grow/
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── Navbar.tsx          # Navigation bar with mobile menu
-│   │   │   ├── Hero.tsx            # Hero section with headline and CTA
-│   │   │   ├── CourseCard.tsx      # Reusable course card component
-│   │   │   ├── CoursesSection.tsx  # Courses grid section
-│   │   │   └── Footer.tsx          # Footer with links and social media
-│   │   ├── data/
-│   │   │   └── courses.ts          # Sample course data
-│   │   ├── types/
-│   │   │   └── Course.ts           # TypeScript interface for Course
-│   │   ├── App.tsx                 # Main app component
-│   │   ├── main.tsx                # Entry point
-│   │   ├── index.css               # Global styles with Tailwind
-│   │   └── vite-env.d.ts           # Vite type definitions
-│   ├── index.html                  # HTML template
-│   ├── package.json                # Dependencies and scripts
-│   ├── tsconfig.json               # TypeScript configuration
-│   ├── tailwind.config.js          # Tailwind CSS configuration
-│   ├── postcss.config.js           # PostCSS configuration
-│   ├── vite.config.ts              # Vite configuration
-│   └── .gitignore                  # Git ignore file
-├── LICENSE                         # License file
-└── README.md                       # Project documentation
+### Problem Statement
+
+Many students in Africa depend only on classroom teaching and have limited access to structured local learning resources. Learn2Grow provides a platform where students can discover courses while teachers and coaches upload and manage educational content.
+
+### Core Features
+
+1. Role-based authentication (student, teacher, admin)
+2. Course creation and moderation flow
+3. Public approved course listing
+4. Student enrollment-ready backend API design
+
+## Architecture Overview
+
+### Architecture Diagram (Mermaid)
+
+```mermaid
+flowchart LR
+   U[Internet Users] --> FE[Frontend Container]
+   FE --> BE[Backend Container]
+   BE --> DB[(MongoDB / Managed DB Layer)]
+
+   GH[GitHub Repository] --> PR[Pull Request]
+   PR --> CI[CI Workflow]
+   CI --> TS[Trivy Image Scan]
+   CI --> TF[tfsec IaC Scan]
+
+   M[Merge to Deploy Branch] --> CD[CD Workflow]
+   CD --> ECR[(Amazon ECR)]
+   CD --> ANS[Ansible Playbook]
+   ANS --> BASTION[Bastion Host]
+   BASTION --> APPVM[Private App VM]
+   APPVM --> RUN[Docker Compose Runtime]
 ```
 
-## Frontend Features
+### Infrastructure Components
 
-- **Responsive Design**: Fully responsive layout that works on all devices
-- **Modern UI**: Clean and modern design using Tailwind CSS
-- **TypeScript**: Fully typed components for better development experience
-- **Component-Based**: Well-structured and reusable components
-- **Sticky Navigation**: Navbar that sticks to the top with hamburger menu on mobile
-- **Course Cards**: Beautiful course cards with hover effects
-- **Hero Section**: Eye-catching hero section with call-to-action buttons
+- VPC with segmented public and private networking
+- Bastion host in public subnet for controlled SSH access
+- App VM in private subnet for application runtime
+- Security groups to restrict network flows
+- Amazon ECR repositories for frontend and backend images
+- Terraform remote state in S3 with locking enabled
 
-## Running the application with Docker Compose
-### Requirements:
-1. Install Docker in your machine
-2. Install Docker compose in your machine
+## Technology Stack
 
-### Run Docker compose command
+- Cloud Provider: AWS
+- Frontend: React 18, Vite, TypeScript, Tailwind CSS
+- Backend: Node.js, Express
+- Database: MongoDB (application integration via MONGO_URI)
+- Containerization: Docker and Docker Compose
+- IaC: Terraform (modular)
+- Configuration Management: Ansible
+- CI/CD: GitHub Actions
+- Security Scanning: Trivy and tfsec
+
+## Repository Structure
+
+```text
+.
+|- .github/workflows/
+|  |- ci.yml
+|  |- cd.yml
+|- terraform/
+|  |- main.tf
+|  |- variables.tf
+|  |- outputs.tf
+|  |- terraform.tfvars.example
+|  |- modules/
+|- ansible/
+|  |- inventory.ini
+|  |- playbook.yml
+|  |- roles/docker/tasks/main.yml
+|- frontend/
+|  |- src/
+|  |- Dockerfile
+|  |- package.json
+|- backend/
+|  |- src/
+|  |- Dockerfile
+|  |- package.json
+|- docker-compose.yml
+|- API_DOCS.md
+|- README.md
+```
+
+## Setup Instructions
+
+### Prerequisites
+
+1. AWS account and IAM permissions for EC2, VPC, ECR, and S3
+2. Terraform >= 1.5
+3. Ansible
+4. Docker and Docker Compose
+5. Node.js 22+
+6. GitHub repository secrets configured
+
+### 1) Clone Repository
+
+```bash
+git clone https://github.com/YOUR-ORG/YOUR-REPO.git
+cd Learn2grow
+```
+
+### 2) Configure Terraform Variables
+
+```bash
+cd terraform
+cp terraform.tfvars.example terraform.tfvars
+```
+
+Update terraform.tfvars values for your environment:
+
+- aws_region
+- key_pair_name
+- db_password
+
+### 3) Provision Infrastructure
+
+```bash
+terraform init
+terraform fmt -recursive
+terraform validate
+terraform apply
+```
+
+After apply, capture outputs such as:
+
+- bastion_public_ip
+- app_private_ip
+- ecr_frontend_url
+- ecr_backend_url
+
+### 4) Prepare GitHub Secrets
+
+Configure the following repository secrets:
+
+- AWS_ACCESS_KEY_ID
+- AWS_SECRET_ACCESS_KEY
+- AWS_REGION
+- ECR_REGISTRY
+- SSH_PRIVATE_KEY
+
+### 5) Deploy with Ansible
+
+Update ansible/inventory.ini with current bastion and private app host values.
+
+Run:
+
+```bash
+cd ansible
+ansible-playbook -i inventory.ini playbook.yml
+```
+
+### 6) Local Development (Optional)
+
+Run the stack with Docker Compose:
+
 ```bash
 docker-compose up --build
 ```
-This command will build images for both frontend and backend, start the MongoDB, links all containers and you can access the application in the ports:
-`http://localhost:3000` for frontend and `http://localhost:5000`for backend.
-You can stop the application with;
+
+Default local endpoints:
+
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:5000
+
+Stop services:
+
 ```bash
 docker-compose down
 ```
 
-## 📦 Installation
+## CI/CD Pipeline
 
-1. Navigate to the frontend directory:
+### CI Pipeline
 
-```bash
-cd frontend
-```
+- Workflow file: .github/workflows/ci.yml
+- Triggers:
 
-2. Install dependencies:
+1. Pull requests to main
+2. Pushes to frontend branch
 
-```bash
-npm install
-```
+- Jobs:
 
-3. Start the development server:
+1. Backend lint, test, Docker build, Trivy scan
+2. Frontend lint, test, Docker build, Trivy scan
+3. Terraform scan with tfsec
 
-```bash
-npm run dev
-```
+Security gates in CI:
 
-4. Build for production:
+- Trivy image scanning with non-zero exit code on configured severity threshold
+- tfsec with soft_fail set to false
 
-```bash
-npm run build
-```
+### CD Pipeline
 
-5. Preview production build:
+- Workflow file: .github/workflows/cd.yml
+- Current trigger: push to devbranch
+- Flow:
 
-```bash
-npm run preview
-```
+1. Run backend dependencies and tests
+2. Build frontend and backend images
+3. Authenticate to ECR
+4. Tag and push images
+5. Connect with SSH key
+6. Deploy via Ansible playbook
 
-## 🎨 Components Overview
+For final rubric alignment, configure deployment trigger to main merge if required by your course instructions.
 
-### Navbar
+## DevSecOps Controls
 
-- Sticky navigation bar
-- Responsive hamburger menu for mobile
-- Smooth navigation links
+1. Trivy scans Docker images for known vulnerabilities
+2. tfsec scans Terraform for IaC misconfigurations
+3. GitHub Secrets used for cloud and SSH credentials
+4. Terraform state and sensitive files excluded through .gitignore
+5. Bastion-based SSH access path to private hosts
 
-### Hero
+## API Documentation
 
-- Gradient background
-- Compelling headline and description
-- Two call-to-action buttons
-- Responsive image placeholder
+Detailed API reference is available in API_DOCS.md.
 
-### CourseCard
+## Testing and Verification Flow
 
-- Course image with category badge
-- Course title and description
-- Instructor information
-- Enroll button with hover effects
+Before submission, run this exact sequence:
 
-### CoursesSection
+1. terraform destroy
+2. terraform apply
+3. Create a small feature change in a branch
+4. Open a pull request and verify CI checks pass
+5. Merge and confirm CD deploys automatically
+6. Validate change on live URL
+7. Run terraform destroy and verify cleanup
 
-- Responsive grid layout (1/2/3 columns)
-- Displays all courses from data
-- "View All Courses" button
+## Security and Compliance Notes
 
-### Footer
+- Do not commit .tfstate, .tfvars, .pem, .env, or private keys
+- Restrict SSH ingress to trusted source IPs where possible
+- Keep app VM private and access through bastion only
+- Rotate credentials and keys regularly
 
-- Platform information
-- Quick links navigation
-- Social media icons
-- Copyright information
+## Challenges and Solutions
 
-## 🎯 Key Features Implemented
+1. Image vulnerability scan failures in frontend pipeline
 
-✅ Fully responsive design
-✅ TypeScript interfaces for type safety
-✅ Reusable components
-✅ Clean and readable code
-✅ Modern UI with Tailwind utility classes
-✅ Smooth transitions and hover effects
-✅ Accessible navigation
-✅ SEO-friendly structure
+- Solution: reduce runtime image attack surface and tune Trivy policy to deployment risk tolerance.
 
-## 🎨 Customization
+2. Private subnet access for deployment
 
-### Adding New Courses
+- Solution: use bastion hop in Ansible inventory through ProxyCommand.
 
-Edit `frontend/src/data/courses.ts` to add or modify courses:
+3. Environment consistency between local and cloud
 
-```typescript
-{
-  id: 7,
-  title: 'Your Course Title',
-  description: 'Course description',
-  instructor: 'Instructor Name',
-  image: 'image-url',
-  category: 'Category'
-}
-```
+- Solution: standardize Docker images and automate deployment with Ansible.
 
-### Changing Colors
+## Video Demonstration
 
-Modify `frontend/tailwind.config.js` to customize the color scheme.
+- Demo link: https://YOUR_VIDEO_LINK
 
-### Adding Sections
+Recommended demo structure:
 
-Create new components in `frontend/src/components/` and import them in `App.tsx`.
+1. Show live running application
+2. Make a visible code change
+3. Open PR and show CI security checks
+4. Merge and show CD auto-deployment
+5. Refresh live app and confirm update
 
-## 📱 Responsive Breakpoints
+## Academic Integrity Statement
 
-- Mobile: < 768px
-- Tablet: 768px - 1024px
-- Desktop: > 1024px
+This project follows course policy regarding academic integrity.
 
-## 🌐 Browser Support
+If your course disallows AI-generated DevOps configuration, ensure Terraform, Ansible, Docker, and GitHub Actions files are authored and understood by the team.
 
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
+## License
+
+MIT License
