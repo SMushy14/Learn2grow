@@ -43,15 +43,16 @@ jobs:
         run: npm run test
 
       - name: Build Docker image
-        run: docker build -t learn2grow-backend .
-      - name: Scan Docker image for vulnerabilities
-        uses: aquasecurity/trivy-action@master
+        run: docker build -t learn2grow-backend:ci .
+
+      - name: Scan backend image for CRITICAL vulnerabilities
+        uses: aquasecurity/trivy-action@0.28.0
         with:
-          image-ref: "learn2grow-backend" # Must match the tag from your build step
-          format: "table"
-          exit-code: "1" # This is crucial! It fails the step if issues are found.
+          scan-type: image
+          image-ref: learn2grow-backend:ci
+          severity: CRITICAL
           ignore-unfixed: true
-          severity: "CRITICAL" # Fail only for Critical issues
+          exit-code: 1
 
   frontend:
     runs-on: ubuntu-latest
@@ -80,17 +81,17 @@ jobs:
       - name: Run Tests
         run: npm run test
       - name: Build Docker image
-        run: docker build -t frontend-app .
+        run: docker build -t frontend-app:latest .
 
-      - name: Scan Docker image for vulnerabilities
+      - name: Scan frontend image for vulnerabilities
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: "frontend-app"
-          format: "table"
-          exit-code: "1"
+          
+          image-ref: frontend-app:latest
+          severity: CRITICAL,HIGH
+          format: table
+          exit-code: 1
           ignore-unfixed: true
-          severity: "CRITICAL"
-          trivyignores: ".trivyignore"
 
   scan-infrastructure:
     name: Scan Terraform Code
@@ -102,6 +103,8 @@ jobs:
       - name: Scan Terraform code
         uses: aquasecurity/tfsec-action@v1.0.0
         with:
-          working_directory: terraform
-          soft_fail: false
-          additional_args: --minimum-severity CRITICAL
+          working_directory: terraform/ 
+          exit_code: 1 
+
+
+
